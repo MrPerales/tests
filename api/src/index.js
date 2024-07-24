@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const routerApi = require("./routes/index");
 const { config } = require("./config/config");
 
 const app = express();
@@ -7,7 +8,7 @@ const app = express();
 // para aceptar post
 // app.use(express.json());
 
-const whiteList = ["http://localhost:5500"];
+const whiteList = ["http://localhost:3000"];
 const options = {
   origin: (origin, callback) => {
     if (whiteList.includes(origin) || !origin) {
@@ -20,14 +21,9 @@ const options = {
 // app.use(cors()) // habilitar a cualquier origen de la peticion
 app.use(cors(options));
 
-// routes
 app.listen(config.port, () => {
   console.log(`Listening at http://localhost:${config.port}`);
 });
 
-const router = express.Router();
-
-app.use("/api/v1", router);
-router.get("/", (req, resp) => {
-  resp.send("api working");
-});
+// route
+routerApi(app);
